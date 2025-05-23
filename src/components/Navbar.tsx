@@ -4,11 +4,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search, Tickets, User, ShoppingCart } from 'lucide-react';
+import { useCart } from '@/contexts/CartContext';
+import { Badge } from '@/components/ui/badge';
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false); // Replace with actual auth state
+  const { itemCount } = useCart();
   
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,9 +50,14 @@ const Navbar = () => {
             <Button variant="ghost">Events</Button>
           </Link>
           
-          <Link to="/cart">
+          <Link to="/cart" className="relative">
             <Button variant="ghost" size="icon">
               <ShoppingCart className="h-5 w-5" />
+              {itemCount > 0 && (
+                <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0">
+                  {itemCount}
+                </Badge>
+              )}
             </Button>
           </Link>
           

@@ -5,12 +5,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { sampleEvents } from '@/data/sampleEvents';
-import { useToast } from '@/components/ui/use-toast';
 import { Calendar, Clock, MapPin, Ticket } from 'lucide-react';
+import { useCart } from '@/contexts/CartContext';
 
 const EventDetails = () => {
   const { id } = useParams<{ id: string }>();
-  const { toast } = useToast();
+  const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   
   const event = sampleEvents.find(event => event.id === id);
@@ -26,17 +26,12 @@ const EventDetails = () => {
   }
 
   const handleAddToCart = () => {
-    toast({
-      title: "Added to cart",
-      description: `${quantity} ticket${quantity > 1 ? 's' : ''} for ${event.title}`,
-    });
+    addToCart(event, quantity);
   };
 
   const handleBuyNow = () => {
-    toast({
-      title: "Proceed to checkout",
-      description: `${quantity} ticket${quantity > 1 ? 's' : ''} for ${event.title}`,
-    });
+    addToCart(event, quantity);
+    window.location.href = '/cart';
   };
 
   return (
